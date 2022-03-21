@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Курс
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'courses')]
 class Course
 {
     #[ORM\Id]

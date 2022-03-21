@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Шаблон занятия, упражнения
  */
 #[ORM\Table(name: 'exercise_templates')]
+#[ORM\Entity]
 class ExerciseTemplate
 {
     #[ORM\Id]

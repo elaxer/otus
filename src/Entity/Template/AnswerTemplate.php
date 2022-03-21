@@ -8,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
  * Шаблон ответа на вопрос
  */
 #[ORM\Table(name: 'answer_templates')]
-#[ORM\Index(name: 'answer_templates__question_template_id__index')]
+#[ORM\Index(name: 'answer_templates__question_template_id__index', columns: ['question_template_id'])]
+#[ORM\Entity]
 class AnswerTemplate
 {
     #[ORM\Id]

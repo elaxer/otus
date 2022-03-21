@@ -8,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
  * Ответ на вопрос
  */
 #[ORM\Table(name: 'answers')]
-#[ORM\Index(name: 'answer__question_id__index')]
+#[ORM\Index(name: 'answer__question_id__index', columns: ['question_id'])]
+#[ORM\Entity]
 class Answer
 {
     #[ORM\Id]

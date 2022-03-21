@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Задание, упражнение
  */
 #[ORM\Table(name: 'exercises')]
+#[ORM\Entity]
 class Exercise
 {
     #[ORM\Id]
@@ -34,25 +35,16 @@ class Exercise
         $this->timeToComplete = $timeToComplete;
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return int|null
-     */
     public function getTimeToComplete(): ?int
     {
         return $this->timeToComplete;

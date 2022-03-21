@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ORM\Table(name: 'questions')]
 #[ORM\Index(name: 'questions__exercise_id__index', columns: ['exercise_id'])]
+#[ORM\Entity]
 class Question
 {
     #[ORM\Id]
@@ -35,9 +36,6 @@ class Question
         $this->exercise = $exercise;
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
@@ -51,17 +49,11 @@ class Question
         return $this->text;
     }
 
-    /**
-     * @return Exercise
-     */
     public function getExercise(): Exercise
     {
         return $this->exercise;
     }
 
-    /**
-     * @return Collection
-     */
     public function getAnswers(): Collection
     {
         return $this->answers;
