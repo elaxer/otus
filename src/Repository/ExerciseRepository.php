@@ -18,4 +18,21 @@ class ExerciseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Exercise::class);
     }
+
+    /**
+     * Найти упражнения по имени
+     *
+     * @return Exercise[]
+     */
+    public function findByName(string $name, int $limit = 10, int $offset = 0): array
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.name = :name')
+            ->setParameter('name', $name)
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

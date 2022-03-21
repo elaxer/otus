@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Answer;
+use App\Entity\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,5 +18,20 @@ class AnswerRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Answer::class);
+    }
+
+    /**
+     * Получить правильные ответы на вопрос
+     *
+     * @return Answer[]
+     */
+    public function getRightAnswersForQuestion(Question $question): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere(['a.question = :question'])
+            ->setParameter('question', $question)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

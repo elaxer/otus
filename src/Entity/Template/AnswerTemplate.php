@@ -23,6 +23,7 @@ class AnswerTemplate
     #[ORM\Column(type: 'string', options: ['comment' => 'Текст ответа на вопрос'])]
     private string $text;
 
+    #[ORM\Column(type: 'boolean', options: ['comment' => 'Является ли этот ответ правильным'])]
     private bool $isRight;
 
     public function __construct(QuestionTemplate $questionTemplate, string $text, bool $isRight)

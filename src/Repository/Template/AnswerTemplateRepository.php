@@ -3,6 +3,7 @@
 namespace App\Repository\Template;
 
 use App\Entity\Template\AnswerTemplate;
+use App\Entity\Template\QuestionTemplate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,5 +18,20 @@ class AnswerTemplateRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AnswerTemplate::class);
+    }
+
+    /**
+     * Получить правильные шаблоны ответов на шаблон вопроса
+     *
+     * @return AnswerTemplate[]
+     */
+    public function getRightAnswerForQuestion(QuestionTemplate $questionTemplate): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere(['a.questionTemplate = :questionTemplate'])
+            ->setParameter('questionTemplate', $questionTemplate)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

@@ -41,6 +41,11 @@ final class Version20220321091901 extends AbstractMigration
         $this->addSql('ALTER TABLE course_students ADD CONSTRAINT FK_DDDE0E4CB944F1A FOREIGN KEY (student_id) REFERENCES students (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE question_templates ADD CONSTRAINT FK_66FD391548281F3C FOREIGN KEY (exercise_template_id) REFERENCES exercise_templates (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE questions ADD CONSTRAINT FK_8ADC54D5E934951A FOREIGN KEY (exercise_id) REFERENCES exercises (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+
+        $this->addSql('ALTER TABLE answer_templates ADD is_right BOOLEAN NOT NULL');
+        $this->addSql('COMMENT ON COLUMN answer_templates.is_right IS \'Является ли этот ответ правильным\'');
+        $this->addSql('ALTER TABLE answers ADD is_right BOOLEAN NOT NULL');
+        $this->addSql('COMMENT ON COLUMN answers.is_right IS \'Является ли этот ответ правильным\'');
     }
 
     public function down(Schema $schema): void

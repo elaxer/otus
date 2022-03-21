@@ -31,7 +31,7 @@ class Student
         return $this->id;
     }
 
-    public function getCourses(): ArrayCollection|Collection
+    public function getCourses(): Collection
     {
         return $this->courses;
     }
