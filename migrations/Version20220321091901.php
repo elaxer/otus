@@ -46,6 +46,9 @@ final class Version20220321091901 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN answer_templates.is_right IS \'Является ли этот ответ правильным\'');
         $this->addSql('ALTER TABLE answers ADD is_right BOOLEAN NOT NULL');
         $this->addSql('COMMENT ON COLUMN answers.is_right IS \'Является ли этот ответ правильным\'');
+
+        $this->addSql('ALTER TABLE students ADD email VARCHAR(255) NOT NULL');
+        $this->addSql('COMMENT ON COLUMN students.email IS \'Почта ученика\'');
     }
 
     public function down(Schema $schema): void

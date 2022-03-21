@@ -22,6 +22,8 @@ final class Version20220321093431 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_DDDE0E4CB944F1A ON course_students (student_id)');
         $this->addSql('CREATE INDEX question_templates__exercise_template_id__index ON question_templates (exercise_template_id)');
         $this->addSql('CREATE INDEX questions__exercise_id__index ON questions (exercise_id)');
+
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_A4698DB2E7927C74 ON students (email)');
     }
 
     public function down(Schema $schema): void
@@ -32,6 +34,8 @@ final class Version20220321093431 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_DDDE0E4CB944F1A');
         $this->addSql('DROP INDEX question_templates__exercise_template_id__index');
         $this->addSql('DROP INDEX questions__exercise_id__index');
+
+        $this->addSql('DROP INDEX UNIQ_A4698DB2E7927C74');
     }
 
     public function isTransactional(): bool

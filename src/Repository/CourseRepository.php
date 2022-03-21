@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Course;
+use App\Entity\Student;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,5 +18,20 @@ class CourseRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Course::class);
+    }
+
+    /**
+     * Получить курсы студента
+     *
+     * @return Student[]
+     */
+    public function getByStudent(Student $student): array
+    {
+        return $this->createQueryBuilder('c')
+            ->setParameter('student', $student)
+            ->andWhere(':student MEMBER OF c.students')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }
