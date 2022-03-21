@@ -56,6 +56,12 @@ class QuestionTemplate
         return $this->answerTemplates;
     }
 
+    public function setText(string $text): QuestionTemplate
+    {
+        $this->text = $text;
+        return $this;
+    }
+
     public function addAnswerTemplate(AnswerTemplate $answerTemplate): void
     {
         if (!$this->answerTemplates->contains($answerTemplate)) {

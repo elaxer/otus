@@ -52,4 +52,22 @@ class AnswerTemplate
     {
         return $this->isRight;
     }
+
+    public function setQuestionTemplate(QuestionTemplate $questionTemplate): AnswerTemplate
+    {
+        $this->questionTemplate = $questionTemplate;
+        return $this;
+    }
+
+    public function setText(string $text): AnswerTemplate
+    {
+        $this->text = $text;
+        return $this;
+    }
+
+    public function setIsRight(bool $isRight): AnswerTemplate
+    {
+        $this->isRight = $isRight;
+        return $this;
+    }
 }

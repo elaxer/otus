@@ -24,7 +24,7 @@ class Course
     #[ORM\Embedded(class: CourseDateRange::class)]
     private CourseDateRange $courseDateRange;
 
-    #[ORM\ManyToMany(targetEntity: Student::class, inversedBy: 'courses')]
+    #[ORM\ManyToMany(targetEntity: Student::class)]
     #[ORM\JoinTable(name: 'course_students')]
     private Collection $students;
 
@@ -63,5 +63,39 @@ class Course
     public function getExercises(): Collection
     {
         return $this->exercises;
+    }
+
+    public function setName(string $name): Course
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function addStudent(Student $student): void
+    {
+        if (!$this->students->contains($student)) {
+            $this->students->add($student);
+        }
+    }
+
+    public function removeStudent(Student $student): void
+    {
+        if ($this->students->contains($student)) {
+            $this->students->remove($student);
+        }
+    }
+
+    public function addExercise(Exercise $exercise): void
+    {
+        if (!$this->exercises->contains($exercise)) {
+            $this->exercises->add($exercise);
+        }
+    }
+
+    public function removeExercise(Exercise $exercise): void
+    {
+        if ($this->exercises->contains($exercise)) {
+            $this->exercises->remove($exercise);
+        }
     }
 }

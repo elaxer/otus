@@ -52,4 +52,16 @@ class Answer
     {
         return $this->isRight;
     }
+
+    public function setText(string $text): Answer
+    {
+        $this->text = $text;
+        return $this;
+    }
+
+    public function setIsRight(bool $isRight): Answer
+    {
+        $this->isRight = $isRight;
+        return $this;
+    }
 }

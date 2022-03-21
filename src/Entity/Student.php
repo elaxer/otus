@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,21 +16,23 @@ class Student
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Course::class, mappedBy: 'students')]
-    private Collection $courses;
-
-    public function __construct()
-    {
-        $this->courses = new ArrayCollection();
-    }
+    #[ORM\Column(type: 'string', options: ['comment' => 'Почта ученика'], unique: true)]
+    private string $email;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCourses(): Collection
+    public function getEmail(): string
     {
-        return $this->courses;
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }

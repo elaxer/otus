@@ -35,25 +35,16 @@ class ExerciseTemplate
         $this->timeToComplete = $timeToComplete;
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return int|null
-     */
     public function getTimeToComplete(): ?int
     {
         return $this->timeToComplete;
@@ -62,5 +53,23 @@ class ExerciseTemplate
     public function getQuestionTemplates(): Collection
     {
         return $this->questionTemplates;
+    }
+
+    public function setName(string $name): ExerciseTemplate
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function setTimeToComplete(?int $timeToComplete): ExerciseTemplate
+    {
+        $this->timeToComplete = $timeToComplete;
+        return $this;
+    }
+
+    public function setQuestionTemplates(ArrayCollection|Collection $questionTemplates): ExerciseTemplate
+    {
+        $this->questionTemplates = $questionTemplates;
+        return $this;
     }
 }

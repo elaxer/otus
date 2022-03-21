@@ -41,9 +41,6 @@ class Question
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getText(): string
     {
         return $this->text;
@@ -63,6 +60,19 @@ class Question
     {
         if (!$this->answers->contains($answer)) {
             $this->answers->add($answer);
+        }
+    }
+
+    public function setText(string $text): Question
+    {
+        $this->text = $text;
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): void
+    {
+        if ($this->answers->contains($answer)) {
+            $this->answers->remove($answer);
         }
     }
 }

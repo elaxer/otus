@@ -54,4 +54,30 @@ class Exercise
     {
         return $this->questions;
     }
+
+    public function setName(string $name): Exercise
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function setTimeToComplete(?int $timeToComplete): Exercise
+    {
+        $this->timeToComplete = $timeToComplete;
+        return $this;
+    }
+
+    public function addQuestion(Question $question): void
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions->add($question);
+        }
+    }
+
+    public function removeQuestion(Question $question): void
+    {
+        if ($this->questions->contains($question)) {
+            $this->questions->remove($question);
+        }
+    }
 }

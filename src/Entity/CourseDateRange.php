@@ -49,4 +49,17 @@ class CourseDateRange
     {
         return $today >= $this->startDate && $today <= $this->endDate;
     }
+
+    public function setStartDate(DateTimeInterface $startDate): CourseDateRange
+    {
+        $this->startDate = $startDate;
+        return $this;
+    }
+
+    public function setEndDate(DateTimeInterface $endDate): CourseDateRange
+    {
+        $this->endDate = $endDate;
+        return $this;
+    }
+
 }
