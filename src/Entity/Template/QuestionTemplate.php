@@ -29,12 +29,12 @@ class QuestionTemplate implements JsonSerializable
     #[ORM\OneToMany(targetEntity: AnswerTemplate::class, mappedBy: 'questionTemplate')]
     private Collection $answerTemplates;
 
-    public function __construct(string $text, ExerciseTemplate $exerciseTemplate)
+    public function __construct(ExerciseTemplate $exerciseTemplate, string $text)
     {
         $this->answerTemplates = new ArrayCollection();
 
-        $this->text = $text;
         $this->exerciseTemplate = $exerciseTemplate;
+        $this->text = $text;
     }
 
     public function getId(): ?int

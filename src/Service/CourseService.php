@@ -6,11 +6,16 @@ use App\Entity\Course;
 use App\Entity\Student;
 use App\Entity\Template\ExerciseTemplate;
 use App\Factory\ExerciseFactoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Manager\CourseManager;
+use App\Manager\ExerciseManager;
 
 class CourseService implements CourseServiceInterface
 {
-    public function __construct(private ExerciseFactoryInterface $exerciseFactory, private EntityManagerInterface $entityManager) {}
+    public function __construct(
+        private ExerciseFactoryInterface $exerciseFactory,
+        private CourseManager $courseManager,
+        private ExerciseManager $exerciseManager,
+    ) {}
 
     /**
      * {@inheritDoc}
@@ -19,8 +24,7 @@ class CourseService implements CourseServiceInterface
     {
         $course->addStudent($student);
 
-        $this->entityManager->persist($course);
-        $this->entityManager->flush();
+        $this->courseManager->save($course);
     }
 
     /**
@@ -32,7 +36,6 @@ class CourseService implements CourseServiceInterface
 
         $course->addExercise($exercise);
 
-        $this->entityManager->persist($exerciseTemplate);
-        $this->entityManager->flush();
+        $this->exerciseManager->save($exercise);
     }
 }
