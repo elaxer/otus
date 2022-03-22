@@ -5,6 +5,7 @@ namespace App\Entity\Template;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * Шаблон вопроса
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'question_templates')]
 #[ORM\Index(name: 'question_templates__exercise_template_id__index', columns: ['exercise_template_id'])]
 #[ORM\Entity]
-class QuestionTemplate
+class QuestionTemplate implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -77,5 +78,17 @@ class QuestionTemplate
         if ($this->answerTemplates->contains($answerTemplate)) {
             $this->answerTemplates->remove($answerTemplate);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->id,
+            'text' => $this->text,
+            'answerTemplates' => $this->answerTemplates->toArray(),
+        ];
     }
 }

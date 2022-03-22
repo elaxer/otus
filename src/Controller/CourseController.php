@@ -8,7 +8,7 @@ use App\Manager\CourseManager;
 use App\Repository\CourseRepository;
 use App\Repository\StudentRepository;
 use App\Repository\Template\ExerciseTemplateRepository;
-use App\Service\CourseService;
+use App\Service\CourseServiceInterface;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,8 +18,15 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/courses')]
 final class CourseController extends AbstractController
 {
-    public function __construct(private CourseManager $courseManager, private CourseRepository $courseRepository, private CourseService $courseService) {}
+    public function __construct(
+        private CourseManager $courseManager,
+        private CourseRepository $courseRepository,
+        private CourseServiceInterface $courseService
+    ) {}
 
+    /**
+     * @throws \Exception
+     */
     #[Route(methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
@@ -33,13 +40,15 @@ final class CourseController extends AbstractController
 
         $this->courseManager->save($course);
 
-        return new JsonResponse($course);
+        return new JsonResponse($course, 201);
     }
 
     #[Route(path: '/{id}', methods: ['GET'])]
     public function get(int $id): JsonResponse
     {
-        return new JsonResponse($this->courseRepository->find($id));
+        $course = $this->courseRepository->find($id);
+
+        return new JsonResponse($course, $course !== null ? 200 : 404);
     }
 
     #[Route(methods: ['GET'])]
@@ -59,6 +68,9 @@ final class CourseController extends AbstractController
         return new JsonResponse(null, 204);
     }
 
+    /**
+     * Добавить в курс упражнение на основе шаблона упражнения
+     */
     #[Route(path: '/{courseId}/exercises/{exerciseId}', methods: ['POST'])]
     public function addExerciseFromTemplate(
         int $courseId,

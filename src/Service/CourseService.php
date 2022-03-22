@@ -8,15 +8,12 @@ use App\Entity\Template\ExerciseTemplate;
 use App\Factory\ExerciseFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Сервис для работы с курсами
- */
-class CourseService
+class CourseService implements CourseServiceInterface
 {
     public function __construct(private ExerciseFactoryInterface $exerciseFactory, private EntityManagerInterface $entityManager) {}
 
     /**
-     * Записать студента на курс
+     * {@inheritDoc}
      */
     public function registerStudent(Course $course, Student $student): void
     {
@@ -27,11 +24,11 @@ class CourseService
     }
 
     /**
-     * Добавить в курс занятие на основе шаблона занятия
+     * {@inheritDoc}
      */
     public function addExerciseFromTemplate(Course $course, ExerciseTemplate $exerciseTemplate): void
     {
-        $exercise = $this->exerciseFactory->createFromTemplate($exerciseTemplate);
+        $exercise = $this->exerciseFactory->createFromTemplate($exerciseTemplate, $course);
 
         $course->addExercise($exercise);
 

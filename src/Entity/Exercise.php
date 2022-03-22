@@ -25,7 +25,7 @@ class Exercise implements JsonSerializable
     #[ORM\Column(type: 'string', options: ['comment' => 'Время в секундах на выполнение задания'], nullable: true)]
     private ?int $timeToComplete;
 
-    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'exercise')]
+    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'exercise', cascade: ['persist'])]
     private Collection $questions;
 
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'exercises')]

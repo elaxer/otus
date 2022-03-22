@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Answer;
+use App\Entity\Course;
 use App\Entity\Exercise;
 use App\Entity\Question;
 use App\Entity\Template\ExerciseTemplate;
@@ -12,9 +13,9 @@ class ExerciseFactory implements ExerciseFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createFromTemplate(ExerciseTemplate $exerciseTemplate): Exercise
+    public function createFromTemplate(ExerciseTemplate $exerciseTemplate, Course $course): Exercise
     {
-        $exercise = new Exercise($exerciseTemplate->getName(), $exerciseTemplate->getTimeToComplete());
+        $exercise = new Exercise($course, $exerciseTemplate->getName(), $exerciseTemplate->getTimeToComplete());
         foreach ($exerciseTemplate->getQuestionTemplates() as $questionTemplate) {
             $question = new Question($exercise, $questionTemplate->getText());
             foreach ($questionTemplate->getAnswerTemplates() as $answerTemplate) {

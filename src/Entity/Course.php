@@ -25,11 +25,11 @@ class Course implements JsonSerializable
     #[ORM\Embedded(class: CourseDateRange::class)]
     private CourseDateRange $courseDateRange;
 
-    #[ORM\ManyToMany(targetEntity: Student::class)]
+    #[ORM\ManyToMany(targetEntity: Student::class, cascade: ['persist'])]
     #[ORM\JoinTable(name: 'course_students')]
     private Collection $students;
 
-    #[ORM\OneToMany(targetEntity: Exercise::class, mappedBy: 'course')]
+    #[ORM\OneToMany(targetEntity: Exercise::class, mappedBy: 'course', cascade: ['persist'])]
     private Collection $exercises;
 
     public function __construct(string $name, CourseDateRange $courseDateRange)

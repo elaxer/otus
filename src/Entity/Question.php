@@ -26,7 +26,7 @@ class Question implements JsonSerializable
     #[ORM\ManyToOne(targetEntity: Exercise::class, inversedBy: 'questions')]
     private Exercise $exercise;
 
-    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'question')]
+    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'question', cascade: ['persist'])]
     private Collection $answers;
 
     public function __construct(Exercise $exercise, string $text)
