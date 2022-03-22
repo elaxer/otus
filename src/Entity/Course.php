@@ -5,13 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * Курс
  */
 #[ORM\Entity]
 #[ORM\Table(name: 'courses')]
-class Course
+class Course implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -97,5 +98,19 @@ class Course
         if ($this->exercises->contains($exercise)) {
             $this->exercises->remove($exercise);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'courseDateRange' => $this->courseDateRange,
+            'exercises' => $this->exercises->toArray(),
+            'students' => $this->students->toArray(),
+        ];
     }
 }

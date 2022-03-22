@@ -51,6 +51,9 @@ class QuestionTemplate
         return $this->exerciseTemplate;
     }
 
+    /**
+     * @return Collection|AnswerTemplate[]
+     */
     public function getAnswerTemplates(): Collection
     {
         return $this->answerTemplates;

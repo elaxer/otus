@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * Вопрос, задание
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'questions')]
 #[ORM\Index(name: 'questions__exercise_id__index', columns: ['exercise_id'])]
 #[ORM\Entity]
-class Question
+class Question implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -28,7 +29,7 @@ class Question
     #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'question')]
     private Collection $answers;
 
-    public function __construct(string $text, Exercise $exercise)
+    public function __construct(Exercise $exercise, string $text)
     {
         $this->answers = new ArrayCollection();
 
@@ -74,5 +75,17 @@ class Question
         if ($this->answers->contains($answer)) {
             $this->answers->remove($answer);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'text' => $this->text,
+            'answers' => $this->answers->toArray(),
+        ];
     }
 }

@@ -24,6 +24,9 @@ final class Version20220321093431 extends AbstractMigration
         $this->addSql('CREATE INDEX CONCURRENTLY questions__exercise_id__index ON questions (exercise_id)');
 
         $this->addSql('CREATE UNIQUE INDEX CONCURRENTLY UNIQ_A4698DB2E7927C74 ON students (email)');
+
+        $this->addSql('CREATE INDEX CONCURRENTLY IDX_FA14991591CC992 ON exercises (course_id)');
+
     }
 
     public function down(Schema $schema): void
@@ -36,6 +39,8 @@ final class Version20220321093431 extends AbstractMigration
         $this->addSql('DROP INDEX CONCURRENTLY questions__exercise_id__index');
 
         $this->addSql('DROP INDEX CONCURRENTLY UNIQ_A4698DB2E7927C74');
+
+        $this->addSql('DROP INDEX CONCURRENTLY IDX_FA14991591CC992');
     }
 
     public function isTransactional(): bool

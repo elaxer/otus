@@ -5,13 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * Задание, упражнение
  */
 #[ORM\Table(name: 'exercises')]
 #[ORM\Entity]
-class Exercise
+class Exercise implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -27,10 +28,14 @@ class Exercise
     #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'exercise')]
     private Collection $questions;
 
-    public function __construct(string $name, ?int $timeToComplete)
+    #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'exercises')]
+    private Course $course;
+
+    public function __construct(Course $course, string $name, ?int $timeToComplete)
     {
         $this->questions = new ArrayCollection();
 
+        $this->course = $course;
         $this->name = $name;
         $this->timeToComplete = $timeToComplete;
     }
@@ -53,6 +58,11 @@ class Exercise
     public function getQuestions(): Collection
     {
         return $this->questions;
+    }
+
+    public function getCourse(): Course
+    {
+        return $this->course;
     }
 
     public function setName(string $name): Exercise
@@ -79,5 +89,18 @@ class Exercise
         if ($this->questions->contains($question)) {
             $this->questions->remove($question);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'timeToComplete' => $this->timeToComplete,
+            'questions' => $this->questions->toArray(),
+        ];
     }
 }

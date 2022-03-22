@@ -50,6 +50,9 @@ class ExerciseTemplate
         return $this->timeToComplete;
     }
 
+    /**
+     * @return Collection|QuestionTemplate[]
+     */
     public function getQuestionTemplates(): Collection
     {
         return $this->questionTemplates;

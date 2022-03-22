@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Продолжительность курса
  */
 #[ORM\Embeddable]
-class CourseDateRange
+class CourseDateRange implements \JsonSerializable
 {
     #[ORM\Column(type: 'date')]
     private DateTimeInterface $startDate;
@@ -62,4 +62,14 @@ class CourseDateRange
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'startDate' => $this->startDate->format('Y-m-d'),
+            'endDate' => $this->endDate->format('Y-m-d'),
+        ];
+    }
 }

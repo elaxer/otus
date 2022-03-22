@@ -49,6 +49,9 @@ final class Version20220321091901 extends AbstractMigration
 
         $this->addSql('ALTER TABLE students ADD email VARCHAR(255) NOT NULL');
         $this->addSql('COMMENT ON COLUMN students.email IS \'Почта ученика\'');
+
+        $this->addSql('ALTER TABLE exercises ADD course_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE exercises ADD CONSTRAINT FK_FA14991591CC992 FOREIGN KEY (course_id) REFERENCES courses (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema): void
