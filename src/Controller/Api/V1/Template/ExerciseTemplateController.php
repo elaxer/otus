@@ -7,6 +7,7 @@ use App\Manager\Template\ExerciseTemplateManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/api/v1/exercise-templates')]
@@ -21,7 +22,7 @@ final class ExerciseTemplateController extends AbstractController
 
         $this->exerciseTemplateManager->save($exerciseTemplate);
 
-        return new JsonResponse($exerciseTemplate, 201);
+        return new JsonResponse($exerciseTemplate, Response::HTTP_CREATED);
     }
 
     #[Route(path: '/{id}', methods: ['GET'])]

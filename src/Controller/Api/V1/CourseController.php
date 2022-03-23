@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/api/v1/courses')]
@@ -41,7 +42,7 @@ final class CourseController extends AbstractController
 
         $this->courseManager->save($course);
 
-        return new JsonResponse($course, 201);
+        return new JsonResponse($course, Response::HTTP_CREATED);
     }
 
     #[Route(path: '/{id}', methods: ['GET'])]
@@ -64,7 +65,7 @@ final class CourseController extends AbstractController
     {
         $this->courseService->registerStudent($this->courseRepository->find($courseId), $studentRepository->find($studentId));
 
-        return new JsonResponse(null, 204);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -77,6 +78,6 @@ final class CourseController extends AbstractController
     {
         $this->courseService->addExerciseFromTemplate($course, $exerciseTemplate);
 
-        return new JsonResponse(null, 204);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

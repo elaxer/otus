@@ -7,6 +7,7 @@ use App\Manager\StudentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/api/v1/students')]
@@ -21,7 +22,7 @@ final class StudentController extends AbstractController
 
         $this->studentManager->save($student);
 
-        return new JsonResponse($student, 201);
+        return new JsonResponse($student, Response::HTTP_CREATED);
     }
 
     #[Route(path: '/{id}', methods: ['GET'])]
