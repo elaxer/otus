@@ -4,12 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Course;
 use App\Entity\CourseDateRange;
+use App\Entity\Template\ExerciseTemplate;
 use App\Manager\CourseManager;
 use App\Repository\CourseRepository;
 use App\Repository\StudentRepository;
-use App\Repository\Template\ExerciseTemplateRepository;
 use App\Service\CourseServiceInterface;
 use DateTimeImmutable;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,11 +45,9 @@ final class CourseController extends AbstractController
     }
 
     #[Route(path: '/{id}', methods: ['GET'])]
-    public function get(int $id): JsonResponse
+    public function get(Course $course): JsonResponse
     {
-        $course = $this->courseRepository->find($id);
-
-        return new JsonResponse($course, $course !== null ? 200 : 404);
+        return new JsonResponse($course);
     }
 
     #[Route(methods: ['GET'])]
@@ -72,15 +71,11 @@ final class CourseController extends AbstractController
      * Добавить в курс упражнение на основе шаблона упражнения
      */
     #[Route(path: '/{courseId}/exercises/{exerciseId}', methods: ['POST'])]
-    public function addExerciseFromTemplate(
-        int $courseId,
-        int $exerciseId,
-        ExerciseTemplateRepository $exerciseTemplateRepository,
-    ): JsonResponse {
-        $this->courseService->addExerciseFromTemplate(
-            $this->courseRepository->find($courseId),
-            $exerciseTemplateRepository->find($exerciseId),
-        );
+    #[Entity('course', options: ['id' => 'courseId'])]
+    #[Entity('exerciseTemplate', options: ['id' => 'exerciseId'])]
+    public function addExerciseFromTemplate(Course $course, ExerciseTemplate $exerciseTemplate): JsonResponse
+    {
+        $this->courseService->addExerciseFromTemplate($course, $exerciseTemplate);
 
         return new JsonResponse(null, 204);
     }

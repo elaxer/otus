@@ -17,6 +17,7 @@ final class AnswerTemplateController extends AbstractController
         private QuestionTemplateRepository $questionTemplateRepository,
         private AnswerTemplateManager $answerTemplateManager,
     ) {}
+
     #[Route(methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
