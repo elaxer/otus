@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Template;
+namespace App\Controller\Api\V1\Template;
 
 use App\Entity\Template\QuestionTemplate;
 use App\Manager\Template\QuestionTemplateManager;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/question-templates')]
+#[Route(path: '/api/v1/question-templates')]
 final class QuestionTemplateController extends AbstractController
 {
     public function __construct(

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Template;
+namespace App\Controller\Api\V1\Template;
 
 use App\Entity\Template\ExerciseTemplate;
 use App\Manager\Template\ExerciseTemplateManager;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/exercise-templates')]
+#[Route(path: '/api/v1/exercise-templates')]
 final class ExerciseTemplateController extends AbstractController
 {
     public function __construct(private ExerciseTemplateManager $exerciseTemplateManager) {}

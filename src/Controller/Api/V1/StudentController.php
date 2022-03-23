@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Api\V1;
 
 use App\Entity\Student;
 use App\Manager\StudentManager;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/students')]
+#[Route(path: '/api/v1/students')]
 final class StudentController extends AbstractController
 {
     public function __construct(private StudentManager $studentManager) {}

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Api\V1;
 
 use App\Entity\Course;
 use App\Entity\CourseDateRange;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/courses')]
+#[Route(path: '/api/v1/courses')]
 final class CourseController extends AbstractController
 {
     public function __construct(
