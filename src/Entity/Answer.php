@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Ответ на вопрос
@@ -21,6 +22,8 @@ class Answer implements JsonSerializable
     #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: 'answers')]
     private Question $question;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3)]
     #[ORM\Column(type: 'string', options: ['comment' => 'Текст ответа на вопрос'])]
     private string $text;
 

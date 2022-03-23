@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Ученик, студент
@@ -17,6 +18,9 @@ class Student implements JsonSerializable
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
+    #[Assert\Email]
     #[ORM\Column(type: 'string', options: ['comment' => 'Почта ученика'], unique: true)]
     private string $email;
 

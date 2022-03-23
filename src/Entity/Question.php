@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use JsonSerializable;
 
 /**
@@ -20,6 +21,8 @@ class Question implements JsonSerializable
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
     #[ORM\Column(type: 'string', length: 255, options: ['comment' => 'Текст вопроса'])]
     private string $text;
 

@@ -24,10 +24,10 @@ final class Version20220321091901 extends AbstractMigration
         $this->addSql('CREATE TABLE courses (id SERIAL NOT NULL, name VARCHAR(255) NOT NULL, course_date_range_start_date DATE NOT NULL, course_date_range_end_date DATE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN courses.name IS \'Название курса\'');
         $this->addSql('CREATE TABLE course_students (course_id INT NOT NULL, student_id INT NOT NULL, PRIMARY KEY(course_id, student_id))');
-        $this->addSql('CREATE TABLE exercise_templates (id SERIAL NOT NULL, name VARCHAR(255) NOT NULL, time_to_complete VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE exercise_templates (id SERIAL NOT NULL, name VARCHAR(255) NOT NULL, time_to_complete INTEGER DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN exercise_templates.name IS \'Название упражнения\'');
         $this->addSql('COMMENT ON COLUMN exercise_templates.time_to_complete IS \'Время в секундах на выполнение задания\'');
-        $this->addSql('CREATE TABLE exercises (id SERIAL NOT NULL, name VARCHAR(255) NOT NULL, time_to_complete VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE exercises (id SERIAL NOT NULL, name VARCHAR(255) NOT NULL, time_to_complete INTEGER DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN exercises.name IS \'Название упражнения\'');
         $this->addSql('COMMENT ON COLUMN exercises.time_to_complete IS \'Время в секундах на выполнение задания\'');
         $this->addSql('CREATE TABLE question_templates (id SERIAL NOT NULL, exercise_template_id INT DEFAULT NULL, text VARCHAR(255) NOT NULL, PRIMARY KEY(id))');

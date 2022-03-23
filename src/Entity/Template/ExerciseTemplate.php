@@ -5,6 +5,7 @@ namespace App\Entity\Template;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use JsonSerializable;
 
 /**
@@ -19,10 +20,13 @@ class ExerciseTemplate implements JsonSerializable
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
     #[ORM\Column(type: 'string', options: ['comment' => 'Название упражнения'])]
     private string $name;
 
-    #[ORM\Column(type: 'string', options: ['comment' => 'Время в секундах на выполнение задания'], nullable: true)]
+    #[Assert\Positive]
+    #[ORM\Column(type: 'integer', options: ['comment' => 'Время в секундах на выполнение задания'], nullable: true)]
     private ?int $timeToComplete;
 
     #[ORM\OneToMany(targetEntity: QuestionTemplate::class, mappedBy: 'exerciseTemplate')]

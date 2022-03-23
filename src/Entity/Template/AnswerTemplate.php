@@ -3,6 +3,7 @@
 namespace App\Entity\Template;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use JsonSerializable;
 
 /**
@@ -21,6 +22,8 @@ class AnswerTemplate implements JsonSerializable
     #[ORM\ManyToOne(targetEntity: QuestionTemplate::class, inversedBy: 'answerTemplates')]
     private QuestionTemplate $questionTemplate;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
     #[ORM\Column(type: 'string', options: ['comment' => 'Текст ответа на вопрос'])]
     private string $text;
 
