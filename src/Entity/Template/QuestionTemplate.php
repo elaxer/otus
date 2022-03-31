@@ -5,6 +5,8 @@ namespace App\Entity\Template;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use JsonSerializable;
 
 /**
  * Шаблон вопроса
@@ -12,13 +14,15 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'question_templates')]
 #[ORM\Index(name: 'question_templates__exercise_template_id__index', columns: ['exercise_template_id'])]
 #[ORM\Entity]
-class QuestionTemplate
+class QuestionTemplate implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
     #[ORM\Column(type: 'string', length: 255, options: ['comment' => 'Текст вопроса'])]
     private string $text;
 
@@ -28,12 +32,12 @@ class QuestionTemplate
     #[ORM\OneToMany(targetEntity: AnswerTemplate::class, mappedBy: 'questionTemplate')]
     private Collection $answerTemplates;
 
-    public function __construct(string $text, ExerciseTemplate $exerciseTemplate)
+    public function __construct(ExerciseTemplate $exerciseTemplate, string $text)
     {
         $this->answerTemplates = new ArrayCollection();
 
-        $this->text = $text;
         $this->exerciseTemplate = $exerciseTemplate;
+        $this->text = $text;
     }
 
     public function getId(): ?int
@@ -51,6 +55,9 @@ class QuestionTemplate
         return $this->exerciseTemplate;
     }
 
+    /**
+     * @return Collection|AnswerTemplate[]
+     */
     public function getAnswerTemplates(): Collection
     {
         return $this->answerTemplates;
@@ -74,5 +81,17 @@ class QuestionTemplate
         if ($this->answerTemplates->contains($answerTemplate)) {
             $this->answerTemplates->remove($answerTemplate);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->id,
+            'text' => $this->text,
+            'answerTemplates' => $this->answerTemplates->toArray(),
+        ];
     }
 }

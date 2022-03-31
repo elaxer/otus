@@ -5,12 +5,13 @@ namespace App\Entity;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * Продолжительность курса
  */
 #[ORM\Embeddable]
-class CourseDateRange
+class CourseDateRange implements JsonSerializable
 {
     #[ORM\Column(type: 'date')]
     private DateTimeInterface $startDate;
@@ -24,17 +25,11 @@ class CourseDateRange
         $this->endDate = $endDate;
     }
 
-    /**
-     * @return DateTimeInterface
-     */
     public function getStartDate(): DateTimeInterface
     {
         return $this->startDate;
     }
 
-    /**
-     * @return DateTimeInterface
-     */
     public function getEndDate(): DateTimeInterface
     {
         return $this->endDate;
@@ -62,4 +57,14 @@ class CourseDateRange
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'startDate' => $this->startDate->format('Y-m-d'),
+            'endDate' => $this->endDate->format('Y-m-d'),
+        ];
+    }
 }

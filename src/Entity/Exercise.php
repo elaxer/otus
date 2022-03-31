@@ -5,32 +5,41 @@ namespace App\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use JsonSerializable;
 
 /**
  * Задание, упражнение
  */
 #[ORM\Table(name: 'exercises')]
 #[ORM\Entity]
-class Exercise
+class Exercise implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', options: ['comment' => 'Название упражнения'])]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
+    #[ORM\Column(type: 'string', length: 255, options: ['comment' => 'Название упражнения'])]
     private string $name;
 
-    #[ORM\Column(type: 'string', options: ['comment' => 'Время в секундах на выполнение задания'], nullable: true)]
+    #[Assert\Positive]
+    #[ORM\Column(type: 'integer', options: ['comment' => 'Время в секундах на выполнение задания'], nullable: true)]
     private ?int $timeToComplete;
 
-    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'exercise')]
+    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'exercise', cascade: ['persist'])]
     private Collection $questions;
 
-    public function __construct(string $name, ?int $timeToComplete)
+    #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'exercises')]
+    private Course $course;
+
+    public function __construct(Course $course, string $name, ?int $timeToComplete)
     {
         $this->questions = new ArrayCollection();
 
+        $this->course = $course;
         $this->name = $name;
         $this->timeToComplete = $timeToComplete;
     }
@@ -53,6 +62,11 @@ class Exercise
     public function getQuestions(): Collection
     {
         return $this->questions;
+    }
+
+    public function getCourse(): Course
+    {
+        return $this->course;
     }
 
     public function setName(string $name): Exercise
@@ -79,5 +93,18 @@ class Exercise
         if ($this->questions->contains($question)) {
             $this->questions->remove($question);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'timeToComplete' => $this->timeToComplete,
+            'questions' => $this->questions->toArray(),
+        ];
     }
 }

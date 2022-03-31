@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Ответ на вопрос
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'answers')]
 #[ORM\Index(name: 'answer__question_id__index', columns: ['question_id'])]
 #[ORM\Entity]
-class Answer
+class Answer implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -20,6 +22,8 @@ class Answer
     #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: 'answers')]
     private Question $question;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3)]
     #[ORM\Column(type: 'string', options: ['comment' => 'Текст ответа на вопрос'])]
     private string $text;
 
@@ -56,12 +60,26 @@ class Answer
     public function setText(string $text): Answer
     {
         $this->text = $text;
+
         return $this;
     }
 
     public function setIsRight(bool $isRight): Answer
     {
         $this->isRight = $isRight;
+
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'text' => $this->text,
+            'isRight' => $this->isRight,
+        ];
     }
 }

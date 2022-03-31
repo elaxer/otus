@@ -5,23 +5,28 @@ namespace App\Entity\Template;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use JsonSerializable;
 
 /**
  * Шаблон занятия, упражнения
  */
 #[ORM\Table(name: 'exercise_templates')]
 #[ORM\Entity]
-class ExerciseTemplate
+class ExerciseTemplate implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
     #[ORM\Column(type: 'string', options: ['comment' => 'Название упражнения'])]
     private string $name;
 
-    #[ORM\Column(type: 'string', options: ['comment' => 'Время в секундах на выполнение задания'], nullable: true)]
+    #[Assert\Positive]
+    #[ORM\Column(type: 'integer', options: ['comment' => 'Время в секундах на выполнение задания'], nullable: true)]
     private ?int $timeToComplete;
 
     #[ORM\OneToMany(targetEntity: QuestionTemplate::class, mappedBy: 'exerciseTemplate')]
@@ -50,6 +55,9 @@ class ExerciseTemplate
         return $this->timeToComplete;
     }
 
+    /**
+     * @return Collection|QuestionTemplate[]
+     */
     public function getQuestionTemplates(): Collection
     {
         return $this->questionTemplates;
@@ -58,18 +66,41 @@ class ExerciseTemplate
     public function setName(string $name): ExerciseTemplate
     {
         $this->name = $name;
+
         return $this;
     }
 
     public function setTimeToComplete(?int $timeToComplete): ExerciseTemplate
     {
         $this->timeToComplete = $timeToComplete;
+
         return $this;
     }
 
-    public function setQuestionTemplates(ArrayCollection|Collection $questionTemplates): ExerciseTemplate
+    public function addQuestionTemplate(QuestionTemplate $questionTemplate): void
     {
-        $this->questionTemplates = $questionTemplates;
-        return $this;
+        if (!$this->questionTemplates->contains($questionTemplate)) {
+            $this->questionTemplates->add($questionTemplate);
+        }
+    }
+
+    public function removeQuestionTemplate(QuestionTemplate $questionTemplate): void
+    {
+        if ($this->questionTemplates->contains($questionTemplate)) {
+            $this->questionTemplates->remove($questionTemplate);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'timeToComplete' => $this->timeToComplete,
+            'questionTemplates' => $this->questionTemplates->toArray(),
+        ];
     }
 }

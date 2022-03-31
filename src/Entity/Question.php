@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use JsonSerializable;
 
 /**
  * Вопрос, задание
@@ -12,23 +14,25 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'questions')]
 #[ORM\Index(name: 'questions__exercise_id__index', columns: ['exercise_id'])]
 #[ORM\Entity]
-class Question
+class Question implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
     #[ORM\Column(type: 'string', length: 255, options: ['comment' => 'Текст вопроса'])]
     private string $text;
 
     #[ORM\ManyToOne(targetEntity: Exercise::class, inversedBy: 'questions')]
     private Exercise $exercise;
 
-    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'question')]
+    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'question', cascade: ['persist'])]
     private Collection $answers;
 
-    public function __construct(string $text, Exercise $exercise)
+    public function __construct(Exercise $exercise, string $text)
     {
         $this->answers = new ArrayCollection();
 
@@ -74,5 +78,17 @@ class Question
         if ($this->answers->contains($answer)) {
             $this->answers->remove($answer);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'text' => $this->text,
+            'answers' => $this->answers->toArray(),
+        ];
     }
 }
